@@ -1,0 +1,53 @@
+<!-- public/html/index.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Consulta Sakila</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+  <h1>Consulta en la base de datos Sakila</h1>
+  <form id="consultaForm">
+    <label for="actor">Nombre del actor:</label>
+    <input type="text" id="actor" name="actor">
+    <br>
+    <label for="fecha">Fecha de última actualización:</label>
+    <input type="date" id="fecha" name="fecha">
+    <br>
+    <label for="hora">Hora de última actualización:</label>
+    <input type="time" id="hora" name="hora">
+    <br>
+    <button type="submit">Consultar</button>
+  </form>
+  <h2>Resultados</h2>
+  <div id="resultados"></div>
+
+  <script>
+    document.getElementById('consultaForm').addEventListener('submit', async function(event) {
+      event.preventDefault();
+
+      const actor = document.getElementById('actor').value;
+      const fecha = document.getElementById('fecha').value;
+      const hora = document.getElementById('hora').value;
+
+      const response = await fetch('/consulta', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded'
+        },
+        body: new URLSearchParams({
+          actor,
+          fecha,
+          hora
+        })
+      });
+
+      const resultados = await response.json();
+      const resultadosDiv = document.getElementById('resultados');
+      resultadosDiv.innerHTML = JSON.stringify(resultados, null, 2);
+    });
+  </script>
+</body>
+</html>

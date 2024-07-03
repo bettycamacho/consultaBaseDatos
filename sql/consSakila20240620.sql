@@ -1,0 +1,1 @@
+SELECT * FROM sakila.actor where first_name = "PENELOPE"
